@@ -30,6 +30,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddControllers();
+builder.Services.AddCors(options => options.AddPolicy("Web", policy => policy
+    .WithOrigins(builder.Configuration.GetSection("Cors:Origins").Get<string[]>()
+        ?? ["http://localhost:5173", "http://127.0.0.1:5173"])
+    .AllowAnyHeader()
+    .AllowAnyMethod()));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -67,6 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("Web");
 app.UseAuthentication();
 app.UseAuthorization();
 
