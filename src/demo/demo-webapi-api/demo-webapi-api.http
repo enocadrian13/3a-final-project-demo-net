@@ -1,0 +1,36 @@
+@demo_webapi_api_HostAddress = http://localhost:5089
+@token = replace-with-token-from-login
+
+### Register a user
+POST {{demo_webapi_api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Demo Student",
+  "username": "demo_student",
+  "email": "student@example.com",
+  "password": "ExamplePassword123!"
+}
+
+### Login using a username or email
+POST {{demo_webapi_api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "identifier": "demo_student",
+  "password": "ExamplePassword123!"
+}
+
+### Get the current user
+GET {{demo_webapi_api_HostAddress}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### Admin-only dashboard
+GET {{demo_webapi_api_HostAddress}}/api/admin/dashboard
+Authorization: Bearer {{token}}
+
+### Invalid registration
+POST {{demo_webapi_api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{}
